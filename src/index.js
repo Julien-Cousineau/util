@@ -134,6 +134,23 @@ module.exports.range = function (n){
     return Array.from(new Array(n), function(x,i) {return i;});
 };
 
+// Debounce function
+module.exports.debounce=function(func, wait, immediate) {
+  let timeout;
+  return function() {
+    let context = this, args = arguments;
+    let later = function() {
+      timeout = null;
+      if (!immediate) func.apply(context, args);
+    };
+    let callNow = immediate && !timeout;
+    clearTimeout(timeout);
+    timeout = setTimeout(later, wait);
+    if (callNow) func.apply(context, args);
+  };
+};
+
+
 // Copy/Replace properties from another
 module.exports.extend = function (dest, src) {
     for (var i in src) dest[i] = src[i];
