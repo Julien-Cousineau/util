@@ -2,14 +2,14 @@
   "name": "@julien.cousineau/util",
   "version": "1.0.0",
   "description": "Utility functions for Javascript",
-  "main": "src/index.js",
+  "main": "build/util.js",
   "directories": {
     "test": "test"
   },
   "scripts": {
     "test": "eslint --fix src/index.js test/test.js && node test/test.js | faucet",
-    "build": "browserify src/index.js -s util -o util.js",
-    "build-min": "browserify index.js -s util | uglifyjs -c warnings=false -m > util.min.js",
+    "build": "browserify src/index.js -s util -o build/util.js",
+    "build-min": "browserify src/index.js -s util | uglifyjs -c warnings=false -m > build/util.min.js",
     "prepare": "npm run build && npm run build-min"
   },
   "repository": {
@@ -31,6 +31,7 @@
     "faucet": "0.0.1",
     "istanbul": "^0.4.5",
     "tape": "^4.9.1",
+    "uglify-es": "^3.3.9",
     "uglify-js": "^3.4.3"
   }
 }
