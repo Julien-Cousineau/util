@@ -158,6 +158,10 @@ module.exports.extend = function (dest, src) {
     return dest;
 };
 
+
+
+
+
 // Convert hex string to rgba object 
 module.exports.hex2rgba = function (hex) {
     hex = hex.replace(/\s/g, '');
@@ -226,5 +230,15 @@ module.exports.rgb2hsv = function (rgb) {
     };
 };
 
+
+module.exports.rgb2hex=function(rgb){
+    const trans = (rgb.a)?("0" + parseInt(Math.round(rgb.a*255),10).toString(16)).slice(-2):'';
+ 
+    return "#" +
+  ("0" + parseInt(rgb.r,10).toString(16)).slice(-2) +
+  ("0" + parseInt(rgb.g,10).toString(16)).slice(-2) +
+  ("0" + parseInt(rgb.b,10).toString(16)).slice(-2) +
+  trans;
+};
 },{}]},{},[1])(1)
 });
