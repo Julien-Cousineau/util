@@ -3,7 +3,7 @@
 /*eslint key-spacing: 0, comma-spacing: 0 */
 
 
-const {extend,hex2rgba,rgb2hsv} = require('../src'),
+const {extend,hex2rgba,rgb2hsv,rgb2hex} = require('../src'),
     t = require('tape');
 
 t('#testing Extend', function (t) {
@@ -162,6 +162,17 @@ t('#testing rgb2hsv', function (t) {
     const input = rgb2hsv({r:188,g:20,b:101});
     const output = {h:331,s:0.89,v:0.74};
     t.same(input,output);
+    t.end();
+});
+
+t('#testing rgb2hex', function (t) {
+    const input = rgb2hex({r:188,g:20,b:101});
+    const output = '#bc1465';
+    
+    const input_b = rgb2hex({r:188,g:20,b:101,a:0.5});
+    const output_b = '#bc146580';
+    t.same(input,output);
+    t.same(input_b,output_b);
     t.end();
 });
 

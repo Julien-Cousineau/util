@@ -158,10 +158,6 @@ module.exports.extend = function (dest, src) {
     return dest;
 };
 
-
-
-
-
 // Convert hex string to rgba object 
 module.exports.hex2rgba = function (hex) {
     hex = hex.replace(/\s/g, '');

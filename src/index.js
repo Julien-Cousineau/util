@@ -228,3 +228,14 @@ module.exports.rgb2hsv = function (rgb) {
         v: Math.round(v * 100) * 0.01
     };
 };
+
+
+module.exports.rgb2hex=function(rgb){
+    const trans = (rgb.a)?("0" + parseInt(Math.round(rgb.a*255),10).toString(16)).slice(-2):'';
+ 
+    return "#" +
+  ("0" + parseInt(rgb.r,10).toString(16)).slice(-2) +
+  ("0" + parseInt(rgb.g,10).toString(16)).slice(-2) +
+  ("0" + parseInt(rgb.b,10).toString(16)).slice(-2) +
+  trans;
+};
