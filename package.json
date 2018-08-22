@@ -1,6 +1,6 @@
 {
   "name": "@julien.cousineau/util",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "Utility functions for Javascript",
   "main": "build/util.js",
   "directories": {
@@ -11,7 +11,7 @@
     "build": "browserify src/index.js -s util -o build/util.js",
     "build-min": "browserify src/index.js -s util | uglifyjs -c warnings=false -m > build/util.min.js",
     "prepare": "npm run build && npm run build-min",
-    "push":"git add . && git commit -m 'comment here' && git push -u origin master",
+    "push": "git add . && git commit -m 'comment here' && git push -u origin master",
     "patch": "npm version patch && npm publish --access=public",
     "minor": "npm version minor && npm publish --access=public",
     "major": "npm version major && npm publish --access=public"
