@@ -64,6 +64,15 @@ if (!Number.prototype.clamp) {
 }
 
 // Number : Create simple range
+if (!Number.prototype.ordermag) {
+    Number.prototype.ordermag = function() {
+        const order = Math.floor(Math.log(this) / Math.LN10 + 0.000000001); // because float math sucks like that
+        return Math.pow(10,order);
+    };
+    
+}
+
+// Array : Create simple range
 if (!Array.prototype.range) {
     Array.prototype.range = function() {
         const len = this.length;
@@ -71,6 +80,8 @@ if (!Array.prototype.range) {
         return this;
     };
 }
+
+
 
 // Array : Calculate max value
 if (!Array.prototype.max) {

@@ -1,6 +1,6 @@
 {
   "name": "@julien.cousineau/util",
-  "version": "1.0.4",
+  "version": "1.0.5",
   "description": "Utility functions for Javascript",
   "main": "build/util.js",
   "directories": {
@@ -10,7 +10,11 @@
     "test": "eslint --fix src/index.js test/test.js && node test/test.js | faucet",
     "build": "browserify src/index.js -s util -o build/util.js",
     "build-min": "browserify src/index.js -s util | uglifyjs -c warnings=false -m > build/util.min.js",
-    "prepare": "npm run build && npm run build-min"
+    "prepare": "npm run build && npm run build-min",
+    "push":"git add . && git commit -m 'comment here' && git push -u origin master",
+    "patch": "npm version patch && npm publish --access=public",
+    "minor": "npm version minor && npm publish --access=public",
+    "major": "npm version major && npm publish --access=public"
   },
   "repository": {
     "type": "git",

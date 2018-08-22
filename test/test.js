@@ -3,7 +3,7 @@
 /*eslint key-spacing: 0, comma-spacing: 0 */
 
 
-const {extend,hex2rgba,rgb2hsv,rgb2hex,hsv2rgb} = require('../src'),
+const {extend,hex2rgba,rgb2hsv,rgb2hex,hsv2rgb,isArray,isUint32Array,isFloat32Array,range} = require('../src'),
     t = require('tape');
 
 t('#testing Extend', function (t) {
@@ -89,57 +89,81 @@ t('#testing Number.prototype.clamp', function (t) {
     t.same(input_c,output_c);
     t.end();
 });
-
-t('#testing Array.prototype.range', function (t) {
-    const input = new Array(5).range();
-    const output = [0,1,2,3,4];
-    console.log(input);
+t('#testing Number.prototype.ordermag', function (t) {
+    const value = 1.1;
+    const input = value.ordermag();
+    const output = 1;
     
-    t.same(input,output);
-    t.end();
-});
-
-t('#testing Array.prototype.max', function (t) {
+    const value_b = 51;
+    const input_b = value_b.ordermag();
+    const output_b = 10;
     
-    const input = new Array(101).range().max();
-    const output = 100;
+    const value_c = 0.99;
+    const input_c = value_c.ordermag();
+    const output_c = 0.1;  
+    
+    const value_d = 8230;
+    const input_d = value_d.ordermag();
+    const output_d = 1000; 
+ 
     t.same(input,output);
+    t.same(input_b,output_b);
+    t.same(input_c,output_c);
+    t.same(input_d,output_d);
     t.end();
 });
 
-t('#testing Array.prototype.min', function (t) {
-    const input = new Array(101).range().min();
-    const output = 0;
-    t.same(input,output);
+t('#testing IsObject', function (t) {
+    t.same(isArray(new Array(5)),true);
+    t.same(isUint32Array(new Uint32Array(5)),true);
+    t.same(isFloat32Array(new Float32Array(5)),true);
+    t.same(isArray(new Float32Array(5)),false);
+    t.same(isUint32Array(new Float32Array(5)),false);
+    t.same(isFloat32Array(new Array(5)),false);    
+
+    t.end();    
+});
+
+
+
+t('#testing Operations', function (t) {
+    // Array
+    t.same(new Array(5).range(),[0,1,2,3,4]);
+    t.same(new Array(5).range().clamp(2,3),[2,2,2,3,3]);
+    t.same(new Array(101).range().min(),0);
+    t.same(new Array(101).range().max(),100); 
+    t.same(new Array(5).range().add(1), [1,2,3,4,5]);
+    t.same(new Array(5).range().subtract(1), [-1,0,1,2,3]);
+    t.same(new Array(5).range().multiply(10), [0,10,20,30,40]);
+    t.same(new Array(5).range().multiply(10).divide(10), [0,1,2,3,4]);
+    t.same(new Array(5).range().compare([0,1,2,3,4]),true);
+    
+    // TypedArray
+    [Int8Array,Int16Array, Int32Array,Uint8Array,Uint16Array, Uint32Array,Float32Array].forEach(item=>{
+        t.same(new item(5).range(),new item([0,1,2,3,4]));
+        t.same(new item(5).range().clamp(2,3),new item([2,2,2,3,3]));
+        t.same(new item(101).range().min(),0);
+        t.same(new item(101).range().max(),100);  
+        t.same(new item(5).range().add(1), new item([1,2,3,4,5]));
+        t.same(new item(5).range().subtract(1), new item([-1,0,1,2,3]));
+        t.same(new item(5).range().multiply(10), new item([0,10,20,30,40]));
+        t.same(new item(5).range().multiply(10).divide(10), new item([0,1,2,3,4]));
+        t.same(new item(5).range().compare(new item([0,1,2,3,4])),true);        
+    });
     t.end();
 });
 
-t('#testing Float32Array.prototype.range', function (t) {
-    const input = new Float32Array(5).range();
-    const output = new Float32Array([0,1,2,3,4]);
-    t.same(input,output);
-    t.end();
-});
-
-t('#testing Float32Array.prototype.max', function (t) {
-    const input = new Float32Array(101).range().max();
-    const output = 100;
-    t.same(input,output);
-    t.end();
-});
-
-t('#testing Float32Array.prototype.min', function (t) {
-    const input = new Float32Array(101).range().min();
-    const output = 0;
-    t.same(input,output);
-    t.end();
-});
-
-t('#testing Float32Array.prototype.clamp', function (t) {
-    const input = new Float32Array(5).range().clamp(2,3);
-    const output = new Float32Array([2,2,2,3,3]);
-    t.same(input,output);
-    t.end();
+t('#testing range function', function (t) {
+    t.same(range(5),new Array(5).range());
+    t.same(range(5,'Int8'),new Int8Array(5).range());
+    t.same(range(5,'Int16'),new Int16Array(5).range());
+    t.same(range(5,'Int32'),new Int32Array(5).range());    
+    t.same(range(5,'Uint8'),new Uint8Array(5).range());
+    t.same(range(5,'Uint16'),new Uint16Array(5).range());
+    t.same(range(5,'Uint32'),new Uint32Array(5).range());
+    t.same(range(5,'Float32'),new Float32Array(5).range());
+    t.same(range(5,'unknown'),new Array(5).range());
+    t.end();    
 });
 
 t('#testing hex2rgba', function (t) {
