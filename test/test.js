@@ -3,7 +3,11 @@
 /*eslint key-spacing: 0, comma-spacing: 0 */
 
 
-const {extend,hex2rgba,rgb2hsv,rgb2hex,hsv2rgb,isArray,isUint32Array,isFloat32Array,range} = require('../src'),
+const {extend,hex2rgba,rgb2hsv,rgb2hex,hsv2rgb,
+        isArray,isUint32Array,isFloat32Array,
+        humanFileSize,
+        getFileExtension,
+        range} = require('../src'),
     t = require('tape');
 
 t('#testing Extend', function (t) {
@@ -123,6 +127,25 @@ t('#testing IsObject', function (t) {
 
     t.end();    
 });
+
+t('#testing functions', function (t) {
+    t.same(humanFileSize(Math.pow(1024,0)),'1 B');
+    t.same(humanFileSize(Math.pow(1024,1)),'1 kB');
+    t.same(humanFileSize(Math.pow(1024,2)),'1 MB');
+    t.same(humanFileSize(Math.pow(1024,3)),'1 GB');
+    
+    t.same(humanFileSize(Math.pow(1024,0)+Math.pow(1024,0)),'2 B');
+    t.same(humanFileSize(Math.pow(1024,1)-Math.pow(1024,0.1)),'1022 B');
+    t.same(humanFileSize(Math.pow(1024,2)-Math.pow(1024,1.1)),'1022 kB');
+    t.same(humanFileSize(Math.pow(1024,3)-Math.pow(1024,2.1)),'1022 MB');    
+    
+    t.same(getFileExtension('x.abc'),'abc');
+    t.same(getFileExtension('x.y.abc'),'abc');
+    t.same(getFileExtension('x.y.z.abc'),'abc');
+
+    t.end();    
+});
+
 
 
 
