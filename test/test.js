@@ -45,8 +45,12 @@ t('#testing String.prototype.padZero', function (t) {
     t.same(input,output);
     t.same(input_b,output_b);
     t.same(input_c,output_c);
+    t.same('pad'.rpad(" ",10),'pad       ');
+    t.same('pad'.lpad(" ",10),'       pad');
     t.end();
 });
+
+
 
 t('#testing Date.prototype.addHours', function (t) {
     const input = new Date('1995-12-17T03:24:00').addHours(1);

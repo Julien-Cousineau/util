@@ -13,6 +13,23 @@ if (!String.prototype.format) {
     };
 }
 
+
+//String :pads left
+String.prototype.lpad = function(padString, length) {
+    var str = this;
+    while (str.length < length)
+        str = padString + str;
+    return str;
+};
+ 
+//String :pads right
+String.prototype.rpad = function(padString, length) {
+    var str = this;
+    while (str.length < length)
+        str = str + padString;
+    return str;
+};
+
 // Extract host name from url
 if (!String.prototype.getHostName) {
     String.prototype.getHostName = function() {
@@ -146,15 +163,6 @@ if (!Number.prototype.ordermag) {
     
 });
 
-
-
-// // Create simple range
-// module.exports.range = function (n,type){
-//      n = (typeof n !== 'undefined') ?  n : 0;
-//      if (!(Number.isInteger(n))) throw Error("Error in range: Value must be an integer");
-//     return Array.from(new Array(n), function(x,i) {return i;});
-// };
-
 module.exports.range = function(n,type) {
     n = (typeof n !== 'undefined') ?  n : 0;
     if (!(Number.isInteger(n))) throw Error("Error in range: Value must be an integer");
@@ -174,16 +182,26 @@ module.exports.range = function(n,type) {
 };
 
 
-
-exports.isFloat32Array = function( value ) {
+module.exports.isFloat32Array = function( value ) {
     return Object.prototype.toString.call( value ) === '[object Float32Array]';
 }; 
-exports.isUint32Array = function( value ) {
+module.exports.isUint32Array = function( value ) {
     return Object.prototype.toString.call( value ) === '[object Uint32Array]';
 };
-exports.isArray = function( value ) {
+module.exports.isArray = function( value ) {
     return Object.prototype.toString.call( value ) === '[object Array]';
 }; 
+
+
+module.exports.humanFileSize = function(size){
+    var i = Math.floor(Math.log(size) / Math.log(1024));
+    return Math.round(100 * (size / Math.pow(1024, i))) / 100 + ' ' + ['B', 'kB', 'MB', 'GB'][i];
+    
+};
+
+module.exports.getFileExtension = function(filename){
+    return filename.split('.').pop();
+};
 
 // Debounce function
 module.exports.debounce=function(func, wait, immediate) {
