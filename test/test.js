@@ -175,7 +175,9 @@ t('#testing Operations', function (t) {
         t.same(new item(5).range().subtract(1), new item([-1,0,1,2,3]));
         t.same(new item(5).range().multiply(10), new item([0,10,20,30,40]));
         t.same(new item(5).range().multiply(10).divide(10), new item([0,1,2,3,4]));
-        t.same(new item(5).range().compare(new item([0,1,2,3,4])),true);        
+        t.same(new item(5).range().compare(new item([0,1,2,3,4])),true);
+        t.same(new item(5).range().move(0,1),new item([1,0,2,3,4]));
+        t.same(new item(5).range().move(4,0),new item([4,0,1,2,3]));
     });
     t.end();
 });
