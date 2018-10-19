@@ -178,6 +178,9 @@ t('#testing Operations', function (t) {
         t.same(new item(5).range().compare(new item([0,1,2,3,4])),true);
         t.same(new item(5).range().move(0,1),new item([1,0,2,3,4]));
         t.same(new item(5).range().move(4,0),new item([4,0,1,2,3]));
+        t.same(new item(5).range().sortIndices(),[0,1,2,3,4]);
+        t.same(new item([3,0,2]).sortIndices(),[1,2,0]);
+        t.same(new item([3,0,2]).sortIndices(true),[0,2,1]);
     });
     t.end();
 });
@@ -243,5 +246,37 @@ t('#testing getHostName', function (t) {
     const input = 'https://www.google.ca/search?ei=XWw'.getHostName();
     const output = 'google.ca';
     t.same(input,output);
+    t.end();
+});
+
+
+t('#testing stringify', function (t) {
+    const obj_1 = {string:'Name',number:1,arrayn:[0,1],arrays:['a','b'],obj:{string:'Inside Object'}};
+    const json_1 = JSON.stringify(obj_1);
+    t.same(json_1,`{"string":"Name","number":1,"arrayn":[0,1],"arrays":["a","b"],"obj":{"string":"Inside Object"}}`);
+    
+    class MyClass{
+        constructor(){
+            this.string='Name';
+            this.number=1;
+            this.arrayn = [0,1];
+            this.arrays = ['a','b'];
+            this.obj = {string:'Inside Object'};
+        }
+    }
+    
+    const json_2 = JSON.stringify(new MyClass());    
+    t.same(json_2,`{"string":"Name","number":1,"arrayn":[0,1],"arrays":["a","b"],"obj":{"string":"Inside Object"}}`);
+    
+    
+    class OutsideClass{
+        constructor(){
+            this.myclass=new MyClass();
+        }
+    }
+    const json_3 = JSON.stringify(new OutsideClass());    
+    t.same(json_3,`{"myclass":{"string":"Name","number":1,"arrayn":[0,1],"arrays":["a","b"],"obj":{"string":"Inside Object"}}}`);
+    
+    
     t.end();
 });

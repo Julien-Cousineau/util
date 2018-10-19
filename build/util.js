@@ -113,6 +113,7 @@ if (!Number.prototype.ordermag) {
         };
     }    
     
+    
     if (!item.prototype.max) {
         item.prototype.max = function(){
             let max = -Infinity, len = this.length;
@@ -157,6 +158,18 @@ if (!Number.prototype.ordermag) {
             }
             return true;
         };        
+    }
+    if (!item.prototype.move) {
+        item.prototype.move = function(from, to) {
+            if( to === from ) return this;
+            const target = this[from];                         
+            const increment = to < from ? -1 : 1;
+            for(var k = from; k != to; k += increment){
+                this[k] = this[k + increment];
+            }
+            this[to] = target;
+            return this;
+        };
     }
 
     
@@ -332,5 +345,6 @@ module.exports.rgb2hex=function(rgb){
   ("0" + parseInt(rgb.b,10).toString(16)).slice(-2) +
   trans;
 };
+
 },{}]},{},[1])(1)
 });
