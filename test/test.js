@@ -27,6 +27,7 @@ t('#testing String.prototype.format', function (t) {
     t.same('{name}'.format({name:'My String'}),'My String');
     t.same('{last}'.format({name:'My String'}),'{last}');
     t.same('{name} + {lastname}'.format({name:'First',lastname:"Last"}),'First + Last');
+    t.same('{quad} + {quad}'.format({quad:0.65424,lastname:"Last"}),'0.65 + 0.65');
     t.end();
 });
 

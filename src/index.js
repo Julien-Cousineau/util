@@ -19,7 +19,7 @@ if (!String.prototype.format) {
             let key = match.replace(/{/, '').replace(/}/, '');
           	if(!isNaN(parseInt(key))) return (typeof args[key] != 'undefined')?args[key] :match;
             if (!args[0][key])return match;
-            return args[0][key];
+            return (isNaN(args[0][key]))?args[0][key]:args[0][key].toFixed(2);
         });                     
         }
 }

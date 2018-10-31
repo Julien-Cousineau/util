@@ -2,8 +2,8 @@
 'use strict';
 
 // String :Formatter, Python approach to add values in strings. 
-if (!String.prototype.format) {
-    String.prototype.format = function() {
+if (!String.prototype.formatold) {
+    String.prototype.formatold = function() {
         let args = arguments;
         return this.replace(/{(\d+)}/g, function(match, number) {
             return typeof args[number] != 'undefined' ?
@@ -11,6 +11,18 @@ if (!String.prototype.format) {
                 match;
         });
     };
+}
+if (!String.prototype.format) {
+    String.prototype.format = function() {
+    		const args = arguments;
+        if(!args)return this;                    
+          return this.replace(/{([^}]*)}/g, function(match,number) {
+            let key = match.replace(/{/, '').replace(/}/, '');
+          	if(!isNaN(parseInt(key))) return (typeof args[key] != 'undefined')?args[key] :match;
+            if (!args[0][key])return match;
+            return args[0][key];
+        });                     
+        }
 }
 
 
@@ -216,7 +228,7 @@ if (!Number.prototype.ordermag) {
     if (!item.prototype.sortIndices) {
         item.prototype.sortIndices = function(desc) {
             const f = desc?(a,b)=>b[1]-a[1]:
-                          (a,b)=>a[1]-b[1];
+                (a,b)=>a[1]-b[1];
             const copy = this.slice(0);
             const keys = new Array(this.length).fill();
             return keys.map((key,i)=>[i,copy[i]]).sort(f).map(item=>item[0]);
