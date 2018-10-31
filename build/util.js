@@ -88,6 +88,42 @@ if (!Number.prototype.ordermag) {
     };
     
 }
+// const quickSortIndices = function(arr,indices,left, right){
+//   let pivot,partitionIndex;
+   
+//   const partition = function(pivot, left, right){
+//     var pivotValue = arr[pivot],
+//         partitionIndex = left;
+  
+//     for(var i = left; i < right; i++){
+//       if(arr[i] < pivotValue){
+//         swap(arr, i, partitionIndex);
+//         swap(indices, i, partitionIndex);
+//         partitionIndex++;
+//       }
+//     }
+//     swap(arr, right, partitionIndex);
+//     swap(indices, right, partitionIndex);
+//     return partitionIndex;
+//   };
+
+
+//   if(left < right){
+//     pivot = right;
+//     partitionIndex = partition(arr, pivot, left, right);
+    
+//     //sort left and right
+//     quickSortIndices(arr,indices, left, partitionIndex - 1);
+//     quickSortIndices(arr,indices, partitionIndex + 1, right);
+//   }
+  
+//   return indices;
+// };
+// const swap = function(arr, i, j){
+//   var temp = arr[i];
+//   arr[i] = arr[j];
+//   arr[j] = temp;
+// };
 
 [Array,Int8Array,Int16Array, Int32Array,Uint8Array,Uint16Array, Uint32Array,Float32Array].forEach(item=>{
     if (!item.prototype.range) {
@@ -96,6 +132,12 @@ if (!Number.prototype.ordermag) {
             return this;
         };
     }
+    if (!item.prototype.random) {
+        item.prototype.random = function() {
+            for(let i=0;i<this.length;i++)this[i]=parseInt(Math.random()*(this.length-1));
+            return this;
+        };
+    }    
     
     if (!item.prototype.clamp) {
         item.prototype.clamp = function(min, max) {
@@ -171,10 +213,62 @@ if (!Number.prototype.ordermag) {
             return this;
         };
     }
-
+    if (!item.prototype.sortIndices) {
+        item.prototype.sortIndices = function(desc) {
+            const f = desc?(a,b)=>b[1]-a[1]:
+                          (a,b)=>a[1]-b[1];
+            const copy = this.slice(0);
+            const keys = new Array(this.length).fill();
+            return keys.map((key,i)=>[i,copy[i]]).sort(f).map(item=>item[0]);
+        };
+    }    
+    // if (!item.prototype.quickSortIndices) {
+    //   item.prototype.quickSortIndices = function() {
+    //     const arr=this.slice(0);
+    //     const indices = new Uint32Array(this.length);
+    //     for(let i=0;i<indices.length;i++)indices[i]=i;
+    //     quickSortIndices(arr,indices,0,this.length-1);
+    //     // console.log(arr)
+    //     return indices;
+    //   };
+    // } 
     
     
 });
+
+// const quickSort = function(arr, left, right){
+//   let pivot,partitionIndex;
+   
+//   const partition = function(arr, pivot, left, right){
+//     var pivotValue = arr[pivot],
+//         partitionIndex = left;
+  
+//     for(var i = left; i < right; i++){
+//       if(arr[i] < pivotValue){
+//         swap(arr, i, partitionIndex);
+//         partitionIndex++;
+//       }
+//     }
+//     swap(arr, right, partitionIndex);
+//     return partitionIndex;
+//   };
+
+
+//   if(left < right){
+//     pivot = right;
+//     partitionIndex = partition(arr, pivot, left, right);
+    
+//   //sort left and right
+//   quickSort(arr, left, partitionIndex - 1);
+//   quickSort(arr, partitionIndex + 1, right);
+//   }
+//   return arr;
+// };
+
+
+
+// module.exports.quickSort = quickSort;
+// module.exports.quickSortIndices = quickSortIndices;
 
 module.exports.range = function(n,type) {
     n = (typeof n !== 'undefined') ?  n : 0;

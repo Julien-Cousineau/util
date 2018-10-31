@@ -19,9 +19,14 @@ t('#testing Extend', function (t) {
 });
 
 t('#testing String.prototype.format', function (t) {
-    const input ='{0}'.format('My String');
-    const output ='My String';
-    t.same(input,output);
+
+    t.same('{0}'.format('My String'),'My String');
+    t.same('{0} {0}'.format('My String'),'My String My String');
+    t.same('{1} {0}'.format('First',"Last"),'Last First');
+    t.same('{2}'.format('First',"Last"),'{2}');
+    t.same('{name}'.format({name:'My String'}),'My String');
+    t.same('{last}'.format({name:'My String'}),'{last}');
+    t.same('{name} + {lastname}'.format({name:'First',lastname:"Last"}),'First + Last');
     t.end();
 });
 
