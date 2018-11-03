@@ -13,15 +13,15 @@ if (!String.prototype.formatold) {
 }
 if (!String.prototype.format) {
     String.prototype.format = function() {
-    		const args = arguments;
+        const args = arguments;
         if(!args)return this;                    
-          return this.replace(/{([^}]*)}/g, function(match,number) {
+        return this.replace(/{([^}]*)}/g, function(match) {
             let key = match.replace(/{/, '').replace(/}/, '');
-          	if(!isNaN(parseInt(key))) return (typeof args[key] != 'undefined')?args[key] :match;
+            if(!isNaN(parseInt(key))) return (typeof args[key] != 'undefined')?args[key] :match;
             if (!args[0][key])return match;
-            return (isNaN(args[0][key]))?args[0][key]:args[0][key].toFixed(2);
+            return args[0][key];
         });                     
-        }
+    };
 }
 
 
