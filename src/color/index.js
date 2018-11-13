@@ -1,4 +1,4 @@
-const {parseCSSColor} =require('csscolorparser');
+import parseCSSColor from './csscolorparser.js';
 import materialcolors from 'material-colors';
 
 export default class Color {
