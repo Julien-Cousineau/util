@@ -2,7 +2,7 @@
   "name": "@julien.cousineau/util",
   "version": "1.0.17",
   "description": "Utility functions for Javascript",
-  "main": "build/util.js",
+  "main": "src/index.js",
   "directories": {
     "test": "test"
   },

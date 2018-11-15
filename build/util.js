@@ -2634,7 +2634,7 @@ function date(a, b) {
   };
 }
 
-function number$1(a, b) {
+function reinterpolate(a, b) {
   return a = +a, b -= a, function(t) {
     return a + b * t;
   };
@@ -2702,7 +2702,7 @@ function string(a, b) {
       else { s[++i] = bm; }
     } else { // interpolate non-matching numbers
       s[++i] = null;
-      q.push({i: i, x: number$1(am, bm)});
+      q.push({i: i, x: reinterpolate(am, bm)});
     }
     bi = reB.lastIndex;
   }
@@ -2728,13 +2728,13 @@ function string(a, b) {
 function interpolateValue(a, b) {
   var t = typeof b, c;
   return b == null || t === "boolean" ? constant$1(b)
-      : (t === "number" ? number$1
+      : (t === "number" ? reinterpolate
       : t === "string" ? ((c = color(b)) ? (b = c, rgb$1) : string)
       : b instanceof color ? rgb$1
       : b instanceof Date ? date
       : Array.isArray(b) ? array$2
       : typeof b.valueOf !== "function" && typeof b.toString !== "function" || isNaN(b) ? object
-      : number$1)(a, b);
+      : reinterpolate)(a, b);
 }
 
 function interpolateRound(a, b) {
@@ -2789,7 +2789,7 @@ function constant$2(x) {
   };
 }
 
-function number$2(x) {
+function number$1(x) {
   return +x;
 }
 
@@ -2808,21 +2808,21 @@ function deinterpolateClamp(deinterpolate) {
   };
 }
 
-function reinterpolateClamp(reinterpolate) {
+function reinterpolateClamp(reinterpolate$$1) {
   return function(a, b) {
-    var r = reinterpolate(a = +a, b = +b);
+    var r = reinterpolate$$1(a = +a, b = +b);
     return function(t) { return t <= 0 ? a : t >= 1 ? b : r(t); };
   };
 }
 
-function bimap(domain, range$$1, deinterpolate, reinterpolate) {
+function bimap(domain, range$$1, deinterpolate, reinterpolate$$1) {
   var d0 = domain[0], d1 = domain[1], r0 = range$$1[0], r1 = range$$1[1];
-  if (d1 < d0) { d0 = deinterpolate(d1, d0), r0 = reinterpolate(r1, r0); }
-  else { d0 = deinterpolate(d0, d1), r0 = reinterpolate(r0, r1); }
+  if (d1 < d0) { d0 = deinterpolate(d1, d0), r0 = reinterpolate$$1(r1, r0); }
+  else { d0 = deinterpolate(d0, d1), r0 = reinterpolate$$1(r0, r1); }
   return function(x) { return r0(d0(x)); };
 }
 
-function polymap(domain, range$$1, deinterpolate, reinterpolate) {
+function polymap(domain, range$$1, deinterpolate, reinterpolate$$1) {
   var j = Math.min(domain.length, range$$1.length) - 1,
       d = new Array(j),
       r = new Array(j),
@@ -2836,7 +2836,7 @@ function polymap(domain, range$$1, deinterpolate, reinterpolate) {
 
   while (++i < j) {
     d[i] = deinterpolate(domain[i], domain[i + 1]);
-    r[i] = reinterpolate(range$$1[i], range$$1[i + 1]);
+    r[i] = reinterpolate$$1(range$$1[i], range$$1[i + 1]);
   }
 
   return function(x) {
@@ -2855,7 +2855,7 @@ function copy(source, target) {
 
 // deinterpolate(a, b)(x) takes a domain value x in [a,b] and returns the corresponding parameter t in [0,1].
 // reinterpolate(a, b)(t) takes a parameter t in [0,1] and returns the corresponding domain value x in [a,b].
-function continuous(deinterpolate, reinterpolate) {
+function continuous(deinterpolate, reinterpolate$$1) {
   var domain = unit,
       range$$1 = unit,
       interpolate$$1 = interpolateValue,
@@ -2875,11 +2875,11 @@ function continuous(deinterpolate, reinterpolate) {
   }
 
   scale.invert = function(y) {
-    return (input || (input = piecewise$$1(range$$1, domain, deinterpolateLinear, clamp ? reinterpolateClamp(reinterpolate) : reinterpolate)))(+y);
+    return (input || (input = piecewise$$1(range$$1, domain, deinterpolateLinear, clamp ? reinterpolateClamp(reinterpolate$$1) : reinterpolate$$1)))(+y);
   };
 
   scale.domain = function(_) {
-    return arguments.length ? (domain = map$2.call(_, number$2), rescale()) : domain.slice();
+    return arguments.length ? (domain = map$2.call(_, number$1), rescale()) : domain.slice();
   };
 
   scale.range = function(_) {
@@ -3291,7 +3291,7 @@ function linearish(scale) {
 }
 
 function linear$1() {
-  var scale = continuous(deinterpolateLinear, number$1);
+  var scale = continuous(deinterpolateLinear, reinterpolate);
 
   scale.copy = function() {
     return copy(scale, linear$1());
@@ -3464,8 +3464,6 @@ var friday = weekday(5);
 var saturday = weekday(6);
 
 var sundays = sunday.range;
-var mondays = monday.range;
-var thursdays = thursday.range;
 
 var month = newInterval(function(date) {
   date.setDate(1);
@@ -3555,8 +3553,6 @@ var utcFriday = utcWeekday(5);
 var utcSaturday = utcWeekday(6);
 
 var utcSundays = utcSunday.range;
-var utcMondays = utcMonday.range;
-var utcThursdays = utcThursday.range;
 
 var utcMonth = newInterval(function(date) {
   date.setUTCDate(1);
