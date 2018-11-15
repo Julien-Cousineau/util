@@ -9,11 +9,18 @@ const {extend,
     isFloat32Array,
     Color,
     Gradient,
+    to,
     humanFileSize,
     getFileExtension,
     range} = require('../src'),
   t = require('tape');
 
+t('#testing to', async function (t) {
+  t.deepEqual(await to(new Promise((resolve)=>resolve(true))),[null,true]);
+  t.deepEqual(await to(new Promise((resolve,reject)=>reject('Rejected'))),['Rejected']);
+  
+  t.end();
+});
 t('#testing Extend', function (t) {
   const obj1 = {id:'IDfromObj1',value:1,avalue:'10'};
   const obj2 = {id:'IDfromObj2',value:2};

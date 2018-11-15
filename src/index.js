@@ -1,5 +1,6 @@
 import Color from './color/index.js';
 import Gradient from './gradient/index.js';
+import to from './to/index.js';
 
 // String :Formatter, Python approach to add values in strings. 
 if (!String.prototype.formatold) {
@@ -365,6 +366,7 @@ function extend(dest, src) {
 export {
   Color,
   Gradient,
+  to,
   extend,
   debounce,
   getFileExtension,

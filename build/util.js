@@ -3464,8 +3464,6 @@ var friday = weekday(5);
 var saturday = weekday(6);
 
 var sundays = sunday.range;
-var mondays = monday.range;
-var thursdays = thursday.range;
 
 var month = newInterval(function(date) {
   date.setDate(1);
@@ -3555,8 +3553,6 @@ var utcFriday = utcWeekday(5);
 var utcSaturday = utcWeekday(6);
 
 var utcSundays = utcSunday.range;
-var utcMondays = utcMonday.range;
-var utcThursdays = utcThursday.range;
 
 var utcMonth = newInterval(function(date) {
   date.setUTCDate(1);
@@ -4374,6 +4370,13 @@ Gradient.parse = function parse (obj){
 
 Object.defineProperties( Gradient.prototype, prototypeAccessors$1 );
 
+function to(promise) {
+  return promise.then(function (data) {
+    return [null, data];
+  })
+    .catch(function (err) { return [err]; });
+}
+
 // String :Formatter, Python approach to add values in strings. 
 if (!String.prototype.formatold) {
   String.prototype.formatold = function() {
@@ -4592,14 +4595,14 @@ if (!Number.prototype.ordermag) {
     };        
   }
   if (!item.prototype.move) {
-    item.prototype.move = function(from, to) {
-      if( to === from ) { return this; }
+    item.prototype.move = function(from, to$$1) {
+      if( to$$1 === from ) { return this; }
       var target = this[from];                         
-      var increment = to < from ? -1 : 1;
-      for(var k = from; k != to; k += increment){
+      var increment = to$$1 < from ? -1 : 1;
+      for(var k = from; k != to$$1; k += increment){
         this[k] = this[k + increment];
       }
-      this[to] = target;
+      this[to$$1] = target;
       return this;
     };
   }
@@ -4737,6 +4740,7 @@ function extend$1(dest, src) {
 
 exports.Color = Color;
 exports.Gradient = Gradient;
+exports.to = to;
 exports.extend = extend$1;
 exports.debounce = debounce;
 exports.getFileExtension = getFileExtension;
