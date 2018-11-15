@@ -1,6 +1,6 @@
 {
   "name": "@julien.cousineau/util",
-  "version": "1.0.19",
+  "version": "1.0.20",
   "description": "Utility functions for Javascript",
   "main": "src/index.js",
   "directories": {
