@@ -1,7 +1,5 @@
 import Color from './color/index.js';
 import Gradient from './gradient/index.js';
-module.exports.Color=Color;
-module.exports.Gradient=Gradient;
 
 // String :Formatter, Python approach to add values in strings. 
 if (!String.prototype.formatold) {
@@ -27,22 +25,25 @@ if (!String.prototype.format) {
   };
 }
 
-
 //String :pads left
-String.prototype.lpad = function(padString, length) {
-  var str = this;
-  while (str.length < length)
-    str = padString + str;
-  return str;
-};
+if (!String.prototype.lpad) {
+  String.prototype.lpad = function(padString, length) {
+    var str = this;
+    while (str.length < length)
+      str = padString + str;
+    return str;
+  };
+}
  
 //String :pads right
-String.prototype.rpad = function(padString, length) {
-  var str = this;
-  while (str.length < length)
-    str = str + padString;
-  return str;
-};
+if (!String.prototype.rpad) {
+  String.prototype.rpad = function(padString, length) {
+    var str = this;
+    while (str.length < length)
+      str = str + padString;
+    return str;
+  };
+}
 
 // Extract host name from url
 if (!String.prototype.getHostName) {
@@ -138,6 +139,8 @@ if (!Number.prototype.ordermag) {
 //   arr[i] = arr[j];
 //   arr[j] = temp;
 // };
+
+
 
 [Array,Int8Array,Int16Array, Int32Array,Uint8Array,Uint16Array, Uint32Array,Float32Array].forEach(item=>{
   if (!item.prototype.range) {
@@ -284,7 +287,7 @@ if (!Number.prototype.ordermag) {
 // module.exports.quickSort = quickSort;
 // module.exports.quickSortIndices = quickSortIndices;
 
-module.exports.range = function(n,type) {
+function range(n,type) {
   n = (typeof n !== 'undefined') ?  n : 0;
   if (!(Number.isInteger(n))) throw Error("Error in range: Value must be an integer");
   let array;
@@ -300,32 +303,45 @@ module.exports.range = function(n,type) {
     
   for(let i=0;i<n;i++)array[i]=i;
   return array;
-};
+}
 
-
-module.exports.isFloat32Array = function( value ) {
-  return Object.prototype.toString.call( value ) === '[object Float32Array]';
-}; 
-module.exports.isUint32Array = function( value ) {
-  return Object.prototype.toString.call( value ) === '[object Uint32Array]';
-};
-module.exports.isArray = function( value ) {
+function isArray(value) {
   return Object.prototype.toString.call( value ) === '[object Array]';
-}; 
+}
+function isInt8Array(value) {
+  return Object.prototype.toString.call( value ) === '[object Int8Array]';
+}
+function isInt16Array(value) {
+  return Object.prototype.toString.call( value ) === '[object Int16Array]';
+}
+function isInt32Array(value) {
+  return Object.prototype.toString.call( value ) === '[object Int32Array]';
+}
+function isUint8Array(value) {
+  return Object.prototype.toString.call( value ) === '[object Uint8Array]';
+}
+function isUint16Array(value) {
+  return Object.prototype.toString.call( value ) === '[object Uint16Array]';
+}
+function isUint32Array(value) {
+  return Object.prototype.toString.call( value ) === '[object Uint32Array]';
+}
+function isFloat32Array(value) {
+  return Object.prototype.toString.call( value ) === '[object Float32Array]';
+}
 
-
-module.exports.humanFileSize = function(size){
+function humanFileSize(size){
   var i = Math.floor(Math.log(size) / Math.log(1024));
   return Math.round(100 * (size / Math.pow(1024, i))) / 100 + ' ' + ['B', 'kB', 'MB', 'GB'][i];
     
-};
+}
 
-module.exports.getFileExtension = function(filename){
+function getFileExtension(filename){
   return filename.split('.').pop();
-};
+}
 
 // Debounce function
-module.exports.debounce=function(func, wait, immediate) {
+function debounce(func, wait, immediate) {
   let timeout;
   return function() {
     let context = this, args = arguments;
@@ -338,118 +354,29 @@ module.exports.debounce=function(func, wait, immediate) {
     timeout = setTimeout(later, wait);
     if (callNow) func.apply(context, args);
   };
-};
-
+}
 
 // Copy/Replace properties from another
-module.exports.extend = function (dest, src) {
+function extend(dest, src) {
   for (var i in src) dest[i] = src[i];
   return dest;
+}
+
+export {
+  Color,
+  Gradient,
+  extend,
+  debounce,
+  getFileExtension,
+  humanFileSize,
+  range,
+  isArray,
+  isInt8Array,
+  isInt16Array,
+  isInt32Array,
+  isUint8Array,
+  isUint16Array,
+  isUint32Array,
+  isFloat32Array
 };
 
-
-
-
-
-// Convert hex string to rgba object 
-module.exports.hex2rgba = function (hex) {
-  hex = hex.replace(/\s/g, '');
-
-  var shorthandRegex = /^#?([a-f\d])([a-f\d])([a-f\d])$/i;
-  hex = hex.replace(shorthandRegex, function(m, r, g, b) {
-    return r + r + g + g + b + b + 'ff';
-  });
-  var noTransRegex = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i;
-  hex = hex.replace(noTransRegex, function(m, r, g, b) {
-    return r + g + b + 'ff';
-  });
-
-  var result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
-
-  return result ? {
-    r: parseInt(result[1], 16),
-    g: parseInt(result[2], 16),
-    b: parseInt(result[3], 16),
-    a: Math.round(parseInt(result[4], 16) / 255.0 * 100.0) * 0.01
-  } : null;
-};
-
-// Convert rgb object to hsv object 
-module.exports.rgb2hsv = function (rgb) {
-  let rr, gg, bb,
-    r = rgb.r / 255,
-    g = rgb.g / 255,
-    b = rgb.b / 255,
-    h, s,
-    v = Math.max(r, g, b),
-    diff = v - Math.min(r, g, b),
-    diffc = function(c) {
-      return (v - c) / 6 / diff + 1 / 2;
-    };
-
-  if (diff == 0) {
-    h = s = 0;
-  }
-  else {
-    s = diff / v;
-    rr = diffc(r);
-    gg = diffc(g);
-    bb = diffc(b);
-
-    if (r === v) {
-      h = bb - gg;
-    }
-    else if (g === v) {
-      h = (1 / 3) + rr - bb;
-    }
-    else if (b === v) {
-      h = (2 / 3) + gg - rr;
-    }
-    if (h < 0) {
-      h += 1;
-    }
-    else if (h > 1) {
-      h -= 1;
-    }
-  }
-  return {
-    h: Math.round(h * 360),
-    s: Math.round(s * 100) * 0.01,
-    v: Math.round(v * 100) * 0.01
-  };
-};
-
-module.exports.hsv2rgb=function(hsv) {
-  const h=hsv.h /360.0,s=hsv.s,v=hsv.v;
-    
-  let r, g, b;
-    
-  let i = Math.floor(h * 6);
-  let f = h * 6 - i;
-  let p = v * (1 - s);
-  let q = v * (1 - f * s);
-  let t = v * (1 - (1 - f) * s);
-    
-  switch (i % 6) {
-  case 0: r = v, g = t, b = p; break;
-  case 1: r = q, g = v, b = p; break;
-  case 2: r = p, g = v, b = t; break;
-  case 3: r = p, g = q, b = v; break;
-  case 4: r = t, g = p, b = v; break;
-  case 5: r = v, g = p, b = q; break;
-  }
-    
-  return {r:Math.floor(r*255), g:Math.floor(g*255), b:Math.floor(b*255)};
-
-};
-
-
-module.exports.rgb2hex=function(rgb){
-  const trans = (rgb.a)?("0" + parseInt(Math.round(rgb.a*255),10).toString(16)).slice(-2):'';
- 
-  return "#" +
-  ("0" + parseInt(rgb.r,10).toString(16)).slice(-2) +
-  ("0" + parseInt(rgb.g,10).toString(16)).slice(-2) +
-  ("0" + parseInt(rgb.b,10).toString(16)).slice(-2) +
-  trans;
-};

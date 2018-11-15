@@ -1,5 +1,10 @@
 const {extend,
     isArray,
+    isInt8Array,
+    isInt16Array,
+    isInt32Array,
+    isUint8Array,
+    isUint16Array,
     isUint32Array,
     isFloat32Array,
     Color,
@@ -128,8 +133,14 @@ t('#testing Number.prototype.ordermag', function (t) {
 
 t('#testing IsObject', function (t) {
   t.same(isArray(new Array(5)),true);
+  t.same(isInt8Array(new Int8Array(5)),true);
+  t.same(isInt16Array(new Int16Array(5)),true);
+  t.same(isInt32Array(new Int32Array(5)),true);
+  t.same(isUint8Array(new Uint8Array(5)),true);
+  t.same(isUint16Array(new Uint16Array(5)),true);
   t.same(isUint32Array(new Uint32Array(5)),true);
   t.same(isFloat32Array(new Float32Array(5)),true);
+  
   t.same(isArray(new Float32Array(5)),false);
   t.same(isUint32Array(new Float32Array(5)),false);
   t.same(isFloat32Array(new Array(5)),false);    
